@@ -1,0 +1,19 @@
+
+
+
+
+
+
+
+                            var bar = foo();
+
+                            function foo() {
+                                var y = 30;
+
+                                for(var i = 4; i >= 1; i--) {
+                                    for(var j = 5; j >= 1; j--) {
+                                        y--;
+                                    }
+                                }
+                                return y;
+                            }
