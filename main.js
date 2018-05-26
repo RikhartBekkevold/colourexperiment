@@ -1,47 +1,40 @@
+// store the element references in memory at start
+
+// the picture
 var stimuli_el = document.getElementById("stimuli");
-var btn = document.getElementById("btn");
+// the next button
+var nextBtn = document.getElementById("btn");
+//the question
 var heading = document.getElementById("question");
+// the icon in the middle of the button
 var icon = document.getElementById("icon");
-heading.innerHTML = 'Before beginning:'; //instructions?
-btn.innerHTML = 'START TEST:';
+// on first page, dont ask a question
+heading.innerHTML = '';
+// button is used to start test on first page, not go to next task
+nextBtn.innerHTML = 'START TEST:';
+// hide the field to put the task answer in on the first page
 document.getElementById('answer_container').style.visibility = 'hidden';
+// the field to put the answer in
+var answer = document.getElementById('answer');
 
-var exp_field;// = document.getElementById("exp");
-var usage_field;
+// object representing the test participant/ the person currently taking the test
+var participant = {
+    id: 0,
+    questionnaire: {
+        yearsProgramming: null,
+        usesCC: null
+    },
+    order: null,        //0 ncc first, 1 cc first
+    answers: [],        //transform to 0, or 1 for correct or not? dont i thin. just need answers to control for trolling or not
+    taskLength: [],
+    totalTime: null,    //move outside. or delete at end.
+    // times: []
+};
 
-//get one or two.. if two use loop to pop array in specific way
-//consider how the data should be recorded so i know that task 2 was last etc
-
-// btn disabled until field not empty
-
-    // 1, 2 or 3
-   // var value = Math.round(1 + Math.random() * 2);
-
-
-
-
-   //dont randomize the nr. randomize the ncc part of the name. if 1 make second have ncc, if 0 let first.
-
-//just determining if ncc and cc is gonna switch place,thats why 1 or 2. dont wanna randomize all. keep in spot, just switch
-//splice?
-
-//push instructions
-//loop
-//push test[i]
-//push pausescreen
-//loop end
-//push donescreen
-
-
-//randomize
-//instructions
-//answer coloumn, button that only works when answered
-
-//questionare fields
-
+// picture array
 var stimulis = [
                 { src: 'img/instructions.png' },
-                { src: 'img/test1mono.png' },
+                { src: 'img/test1.png' },
                 { src: 'img/pausescreen.png' },
                 { src: 'img/test1ncc.png' },
                 { src: 'img/pausescreen.png' },
@@ -55,10 +48,11 @@ var stimulis = [
                 { src: 'img/donescreen.png' }
             ];
 
+// generate randomly the nr 0 or 1
 var value = Math.round(Math.random());
-
+participant.order = value;
+// if the random nr === 0 reverse the order of the pairs displayed
 if(value === 0) {
-
     stimulis[1].src = 'img/test1ncc.png'     //set to ncc
     stimulis[3].src = 'img/test1.png'        //remove ncc
 
@@ -67,98 +61,15 @@ if(value === 0) {
 
     stimulis[9].src = 'img/test3ncc.png'     //set to ncc
     stimulis[11].src ='img/test3.png'        //remove ncc
-
 }
 
-
-
-// for(var i = 0; i < stimulis.length; i++) {
-//     stimulis[1].src = 'img/test1ncc.png'     //set to ncc
-//     stimulis[3].src = 'img/test1.png'        //remove ncc
-// }
-//
-
-
-//i can clean up and change the format of the data, as long as i have the data
-
-//record in the data the order?
-
-//if in doubt, make an assumption
-
-//should the data show the randomization?
-//will other data from eye tracker feks do that?
-
-//write to two different files?
-
-//randomized = secure for carry on effect? but cant analyze by seeing
-//they did better for the first one, so cant be carry over effect...
-
-//ask what to randomize
-
-//learning effect between tasks dont matter?
-//learning effect between ncc and cc though I need to account for
-
-//randomizing everything... difine into categories...
-
-//all are ncc first or vis versa
-
-//if its not recorded, how do i know?
-//if its the same, i know since i know which came first
-
-//dont want to randomize everything sicne need more samples
-
-//foo being called before function works
-
-//when you think you have the answer
-
-//monochrome is a very different. so is few vs many colours
-
-//"also see if there are any difference between the syntax highlighters. not all equal feks. is monocrhome better? many colours? last is best, becasue
-// looks at the aspect that actually should help. the words having colour. so..."
-
-
-//since snipptes small, hard to have many colours
-
-//does it help, and does the effct&/help increase with more colours (not experience)?
-
-//more diff SH, more tests/tasks
-
-//color. or light vs dark themes...
-
-//mentally prepare them?
-
-//monocrhome
-
-//test in diff browsers
-
-//does the nr of color matter? thats the qustiosn i ask
-//so need theme where i can ask a question
-
-//font
-
+var times = [];
 var currentTask = 0;
 stimuli_el.src = stimulis[0].src;
 
-var participant = {
-    id: 0,
-    questionnaire: {
-        yearsProgramming: null,
-        usesCC: null
-    },
-    order: null,        //0 ncc first, 1 cc first
-    answers: [],        //transform to 0, or 1 for correct or not? dont i thin. just need answers to control for trolling or not
-    taskLength: [],
-    totalTime: null, //move outside. or delete at end.
-    times: []
-};
 
-
-participant.order = value;
-
-//it happens that someone does complete or data is corrupt for some of the tasks. then can still analyze
-
+/////////////////////////////////
 function saveData() {
-
     calcTimeSpentOnEachTask(); //this pushes current times as length into taskLength first
     var data = JSON.stringify(participant, null, 2);
     self = this;
@@ -172,121 +83,85 @@ function saveData() {
             }
         }
     })
-
 }
 
+
+/////////////////////////////////
 function recordCurrentTime() {
 
-    icon.disabled = true;
-    document.getElementById('answer_container').style.visibility = 'visible';
-
-    if(currentTask === 0) {
-        // participant.questionnaire.yearsProgramming = exp_field.value;
-        // participant.questionnaire.usesCC = usage_field.value;
+    // if task page
+    if (isOdd(currentTask + 1) == 1) {  //if i move this inside i dont need + 1
+         icon.disabled = true;
+         icon.style.opacity = 0.4;
+         nextBtn.style.opacity = 0.4;
+         document.getElementById('answer_container').style.visibility = 'visible';
+    }
+    // if pause page
+    else {
+        icon.disabled = false;
+        icon.style.opacity = 1;
+        nextBtn.style.opacity = 1;
+        document.getElementById('answer_container').style.visibility = 'hidden';
     }
 
+    // if not at end of array
     if(currentTask < stimulis.length - 1) {
-
-
-        // btn.style.backgroundColor = 'red';
+        // add the current time in ms
         var d = new Date();
         var time = d.getTime();
-        participant.times.push( time );
-        console.log(participant.times);
+        times.push(time);
 
-        // if(document.getElementById('answer').value != '') {
-        //      icon.disabled = false;
-        // }
+        // add answer
+        isOdd(currentTask) == 1 ? participant.answers.push(document.getElementById('answer').value) : null;
 
-        participant.answers.push(document.getElementById('answer').value);
-        console.log(participant.answers);
+        // reset answer field
         document.getElementById('answer').value = '';
 
-//show it only on isOdd() == 1
-//add 0 or 1
-
+        // replace
         stimuli_el.src = stimulis[++currentTask].src;
-        console.log(currentTask);
-
-        //if btn.innerHTML != 'NEXT'
-        // btn.innerHTML = 'NEXT TASK:';
-        btn.innerHTML = isOdd(currentTask) == 1 ? 'NEXT TASK:' : 'NEXT TASK:';
+        nextBtn.innerHTML = isOdd(currentTask) == 1 ? 'NEXT TASK:' : 'NEXT TASK:';
         heading.innerHTML = isOdd(currentTask) == 1 ? 'What is the value of bar?' : 'Pause';
-        // heading.innerHTML = "What is the value of 'bar'?"
 
+        // if at last task page
         if(currentTask === stimulis.length - 1) {
+            // save only
             saveData();
-            btn.style.visibility = 'hidden';
+            nextBtn.style.visibility = 'hidden';
             icon.style.visibility = 'hidden';
             heading.innerHTML = 'Finished';
             document.getElementById('answer_container').style.visibility = 'hidden';
         }
-
-        setTimeout(function() {
-            icon.disabled = false;
-        }, 500)
-
     }
-
 }
 
 
-//randomizing tasks (pairs) doesnt matter since im not testing if some of them (the pairs) are harder or not
-//randomizing ncc and cc make sure to see if there is a learning effect between
-
-
-function calcTimeSpentOnEachTask() { //format?
-
+/////////////////////////////////
+function calcTimeSpentOnEachTask() {
     var length = [];
-
     var self = this;
-    participant.times.forEach(function(time, index) {
+
+    times.forEach(function(time, index) {
         if(index > 0 && isOdd(index) === 1) {
-            var time = (self.participant.times[index] - self.participant.times[index - 1]) / 1000;
+            var time = (times[index] - times[index - 1]) / 1000;
             self.participant.totalTime += time;
 
             console.log('Task ' + index + ' took: ' + time + ' seconds');
             self.participant.taskLength.push(time);
         }
     });
-
-
 }
 
 
+/////////////////////////////////
+function onAnswering() {
+    icon.disabled = false;
+    icon.style.opacity = 1;
+    nextBtn.style.opacity = 1;
+}
 
+
+/////////////////////////////////
 function isOdd(num) {
+    // return 1 if odd nr, 0 for not odd nr
     return num % 2;
 }
-
-
-
-
-//obj is ok, can assign instead of push
-//
-
-
-//if double click prevent anything from happen
-// format of data and how to analyze
-
-// dont calc time between button click 2 and  3, but 3 and 4 since this is an pause screen. however not a problem that the data is recored. just need
-// to know its not a test.
-
-
-//disable button immidately, then cant dobbel click and also cant go on before answering
-//opacity to show disabled
-
-//third column between button and stimuli where you answer. radio buttons?
-
-//when disabling dont need the check down below. invislbe cant click and disabled cant click and call function.
-//rigjt now its a check that makes sure code wont fire.
-
-
-// const MIN = 100;
-// const DIVIATION = 10;
-// Math.round(MIN + Math.random() * 10);
-
-
-//start screen briefing:
-//assume its correct - no traps
-//inform aboyut time or what the test is about?

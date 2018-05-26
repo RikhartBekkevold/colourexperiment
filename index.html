@@ -4,32 +4,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
-
-    <title>color experiment</title>
+    <link href="fontawesome-free-5.0.8/web-fonts-with-css/css/fontawesome-all.css" rel="stylesheet">
+    <title>Colour Experiment</title>
     <style>
         body {
             color: white;
             background-color: hsl(220, 13%, 18%);
             font-family: 'Roboto', sans-serif;
-
-                /* margin-top:20px; */
         }
         h2, h1, h3, h4 {
             user-select: none;
             text-align: center;
-            /* font-family: 'Roboto', sans-serif; */
             font-weight: bold;
             font-size: 40px;
         }
         #app {
-            /* margin: auto; */
-            /* width: 1900px; */
             border: 0px solid red;
         }
         section {
-            /* margin: auto; */
-            width: 60%;
+            width: 40%;
         }
         p {
             user-select: none;
@@ -37,51 +30,46 @@
         img {
             display: block;
             margin: auto;
-            border: 0px solid white;
+            border:0px solid white;
             user-select: none;
+            width: 600px;
         }
         i {
             cursor: pointer;
-            /* margin-top: 200px; */
         }
         button {
             cursor: pointer;
             background-color: hsl(220, 13%, 18%);
             border: 0px;
-
         }
         button:focus {
             outline: none;
         }
         input {
-            border: 1px solid orange;
-            /* margin-left: 15px; */
-            height: 50px;
+            /* border: 1px solid orange; */
+            height: 20px;
+            /* width: 100px; */
         }
     </style>
-  </head>
-  <body>
-
+    </head>
+    <body>
         <div id="app">
+            <aside style="display: inline-block; width: 20%; float: left; opacity: 0;">&nbsp;</aside>
             <section style="float:left;">
                 <h1 id="question" style="margin-bottom: 60px"></h1>
-                <img id="stimuli" width="670px" src="" />
-
+                <img id="stimuli" width="670px" src=""/>
             </section>
 
-            <!-- Type answer here -->
-            <!-- <div style="float: left; min-height: 600px; margin-top: 20px; width: 150px; border: 0px solid red">
-                <p style="margin-top: 200px; font-size: 1.4em;"> Answer: </p>
+            <div style="border-left: 1px solid #ddd; margin-top: 20px; padding-left: 50px; width: 24%; float: left; min-height: 600px">
+                <div style="margin-top: 150px" id="answer_container">
+                    <label for="answer">Answer here:</label>
+                    <br>
+                    <input oninput="onAnswering()" id="answer" type="text" />
+                </div>
 
-                <input type="text" style="width: 60px; height: 20px" />
-            </div> -->
-            <div style=" border-left: 1px solid #ddd; margin-top: 20px; padding-left: 50px; width: 24%; float: left; min-height: 600px">
-                <div id="answer_container"><label for="answer">Answer here:</label><input id="answer" type="text" /></div>
-
-                <p id="btn" style=" font-size: 2em; margin-top: 200px; margin-bottom: 10px"></p>
-                 <button id="icon"  style="opacity: 1; color: black; width: 130px; height: 50px;" onclick="recordCurrentTime()">
-
-                    <i  style="font-size: 3em; color: white; opacity: 1;" class="fas fa-arrow-circle-right"></i>
+                <p id="btn" style="font-size: 1.5em; margin-top: 50px; margin-bottom: 10px"></p>
+                 <button id="icon" style="opacity: 1; color: black; width: 130px; height: 50px;" onclick="recordCurrentTime()">
+                    <i style="font-size: 3em; color: white; opacity: 1;" class="fas fa-arrow-circle-right"></i>
                 </button>
             </div>
         </div>
@@ -89,5 +77,5 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="main.js"></script>
-  </body>
+    </body>
 </html>
