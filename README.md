@@ -3,7 +3,7 @@
 ## Purpose
 Program created as part of an experiment to test the effects on comprehension of programming code when
 the code was both colour coded (CC) and non-colour coded (NCC). The effect is defined as the time to complete
-tasks. The time is recorded in milliseconds.     
+tasks.  
 
 ## Code
 Flexibility is limited due to some parts being hardcoded. Might not be suitable to perform

@@ -54,22 +54,57 @@
     </head>
     <body>
         <div id="app">
-            <aside style="display: inline-block; width: 20%; float: left; opacity: 0;">&nbsp;</aside>
+
+            <!-- left coloum - empty space -->
+            <aside
+                style="display: inline-block; width: 20%; float: left; opacity: 0;">
+                &nbsp;
+            </aside>
+
+            <!-- middle coloum - stimulis -->
             <section style="float:left;">
-                <h1 id="question" style="margin-bottom: 60px"></h1>
-                <img id="stimuli" width="670px" src=""/>
+                <h1 id="question"
+                    style="margin-bottom: 60px">
+                </h1>
+                <img
+                    id="stimuli"
+                    width="670px"
+                    src=""
+                />
             </section>
 
+            <!-- right coloum - user controls  -->
             <div style="border-left: 1px solid #ddd; margin-top: 20px; padding-left: 50px; width: 24%; float: left; min-height: 600px">
-                <div style="margin-top: 150px" id="answer_container">
-                    <label for="answer">Answer here:</label>
+
+                <!-- answer field -->
+                <div
+                    style="margin-top: 150px"
+                    id="answer_container">
+                    <label
+                        for="answer">
+                        Answer here:
+                    </label>
                     <br>
-                    <input oninput="onAnswering()" id="answer" type="text" />
+                    <input
+                        oninput="onAnswering()"
+                        id="answer"
+                        type="text"
+                    />
                 </div>
 
-                <p id="btn" style="font-size: 1.5em; margin-top: 50px; margin-bottom: 10px"></p>
-                 <button id="icon" style="opacity: 1; color: black; width: 130px; height: 50px;" onclick="recordCurrentTime()">
-                    <i style="font-size: 3em; color: white; opacity: 1;" class="fas fa-arrow-circle-right"></i>
+                 <!-- next button -->
+                 <p
+                     id="btn"
+                     style="font-size: 1.5em; margin-top: 50px; margin-bottom: 10px">
+                 </p>
+                 <button
+                    id="icon"
+                    style="opacity: 1; color: black; width: 130px; height: 50px;"
+                    onclick="recordCurrentTime()">
+                    <i
+                        style="font-size: 3em; color: white; opacity: 1;"
+                        class="fas fa-arrow-circle-right">
+                    </i>
                 </button>
             </div>
         </div>
